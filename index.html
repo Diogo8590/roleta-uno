@@ -1,0 +1,91 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Roleta de Cores UNO</title>
+  <style>
+    body {
+      background-color: #f9f9f9;
+      font-family: 'Arial Black', sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    .logo {
+      width: 150px;
+      margin-bottom: 20px;
+    }
+    .wheel {
+      width: 300px;
+      height: 300px;
+      border: 12px solid #000;
+      border-radius: 50%;
+      margin: 20px auto;
+      position: relative;
+      overflow: hidden;
+      transition: transform 4s cubic-bezier(0.33, 1, 0.68, 1);
+    }
+    .segment {
+      position: absolute;
+      width: 50%;
+      height: 50%;
+      top: 50%;
+      left: 50%;
+      transform-origin: 0% 0%;
+    }
+    .pointer {
+      width: 0; 
+      height: 0; 
+      border-left: 20px solid transparent;
+      border-right: 20px solid transparent;
+      border-bottom: 30px solid black;
+      margin: 0 auto;
+    }
+    #spin {
+      padding: 15px 30px;
+      font-size: 1.2em;
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <img src="uno-logo.png" alt="UNO Logo" class="logo"/>
+  <div class="pointer"></div>
+  <div id="wheel" class="wheel"></div>
+  <button id="spin">Girar</button>
+  <audio id="sound" src="roleta.mp3" preload="auto"></audio>
+  <script>
+    const colors = ['red', 'yellow', 'green', 'blue'];
+    const wheel = document.getElementById('wheel');
+    const spinBtn = document.getElementById('spin');
+    const sound = document.getElementById('sound');
+    let deg = 0;
+
+    function drawWheel() {
+      wheel.innerHTML = '';
+      for (let i = 0; i < 4; i++) {
+        const segment = document.createElement('div');
+        segment.className = 'segment';
+        segment.style.transform = `rotate(${i * 90}deg) skewY(-45deg)`;
+        segment.style.backgroundColor = colors[i];
+        wheel.appendChild(segment);
+      }
+    }
+
+    spinBtn.addEventListener('click', () => {
+      const extra = Math.floor(Math.random() * 360);
+      deg += 1440 + extra;
+      wheel.style.transform = `rotate(${deg}deg)`;
+      sound.currentTime = 0;
+      sound.play();
+    });
+
+    drawWheel();
+  </script>
+</body>
+</html>
